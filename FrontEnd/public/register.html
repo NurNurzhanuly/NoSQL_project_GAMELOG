@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Log - Register</title>
+    <link rel="stylesheet" href="/FrontEnd/views/auth.css">
+    <a href="/FrontEnd/public/index.html" class="logo">GAME LOG</a>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="video-background">
+        <video autoplay loop muted playsinline>
+            <source src="/FrontEnd/video/Timeline 2.mov" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <div class="container register-container">
+        <h1>Register</h1>
+        <form class="register-form" id="registerForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
+            </div>
+            <button type="submit">Register</button>
+            <p id="registrationMessage"></p>
+        </form>
+    </div>
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async function (event) {
+            event.preventDefault(); // Отключаем стандартное поведение формы
+
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const registrationMessage = document.getElementById('registrationMessage');
+
+            // Проверка совпадения паролей
+            if (password !== confirmPassword) {
+                registrationMessage.textContent = 'Passwords do not match!';
+                registrationMessage.style.color = 'red';
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, email, password }),
+                });
+
+                if (response.ok) {
+                    registrationMessage.textContent = 'Registration successful!';
+                    registrationMessage.style.color = 'green';
+                    document.getElementById('registerForm').reset();
+                } else {
+                    const data = await response.json();
+                    registrationMessage.textContent = data.message || 'Registration failed!';
+                    registrationMessage.style.color = 'red';
+                }
+            } catch (error) {
+                registrationMessage.textContent = 'An error occurred!';
+                registrationMessage.style.color = 'red';
+            }
+        });
+    </script>
+</body>
+
+</html>

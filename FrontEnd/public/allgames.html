@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Log - All Games</title>
+    <link rel="stylesheet" href="/FrontEnd/views/allgames.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle Navigation Menu">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+            </svg>
+        </button>
+        <nav>
+            <a href="/FrontEnd/public/index.html" class="logo">GAME LOG</a>
+            <ul>
+                <li>
+                    <div class="search-container">
+                        <input type="text" placeholder="Search" class="search-input">
+                        <button type="submit" class="search-button" aria-label="Search">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <ul>
+            <li><a href="/FrontEnd/public/index.html">Home</a></li>
+            <li><a href="/FrontEnd/public/allgames.html">All Games</a></li>
+            <li><a href="/FrontEnd/public/cart.html">Cart</a></li>
+            <li><a href="/FrontEnd/public/library.html">Library</a></li>
+        </ul>
+    </aside>
+
+    <div class="container">
+        <h1>All Games</h1>
+        <div id="all-games-grid" class="games-grid">
+            <div class="game-card">
+                <img src="/FrontEnd/images/cyberpunk-2077-allgames.jpg" alt="Cyberpunk 2077">
+                <div class="game-info">
+                    <h3>Cyberpunk 2077</h3>
+                    <button class="add-to-cart-btn" data-game-title="Cyberpunk 2077" data-game-image="/FrontEnd/images/cyberpunk-2077-allgames.jpg">Add to Cart</button>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="/FrontEnd/images/rdr2_allgames.jpg" alt="Red Dead Redemption 2">
+                <div class="game-info">
+                    <h3>Red Dead Redemption 2</h3>
+                    <button class="add-to-cart-btn" data-game-title="Red Dead Redemption 2" data-game-image="/FrontEnd/images/rdr2_allgames.jpg">Add to Cart</button>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="/FrontEnd/images/doom_eternal_allgames.jpg" alt="Doom Eternal">
+                <div class="game-info">
+                    <h3>Doom Eternal</h3>
+                    <button class="add-to-cart-btn" data-game-title="Doom Eternal" data-game-image="/FrontEnd/images/doom_eternal_allgames.jpg">Add to Cart</button>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="/FrontEnd/images/minecraft_allgames.jpg" alt="Minecraft">
+                <div class="game-info">
+                    <h3>Minecraft</h3>
+                    <button class="add-to-cart-btn" data-game-title="Minecraft" data-game-image="/FrontEnd/images/minecraft_allgames.jpg">Add to Cart</button>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="/FrontEnd/images/Tlou2_allgames.jpg" alt="The Last of Us">
+                <div class="game-info">
+                    <h3>The Last of Us</h3>
+                    <button class="add-to-cart-btn" data-game-title="The Last of Us" data-game-image="/FrontEnd/images/Tlou2_allgames.jpg">Add to Cart</button>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="/FrontEnd/images/Hollow_Knight_allgames.jpg" alt="Hollow Knight">
+                <div class="game-info">
+                    <h3>Hollow Knight</h3>
+                    <button class="add-to-cart-btn" data-game-title="Hollow Knight" data-game-image="/FrontEnd/images/Hollow_Knight_allgames.jpg">Add to Cart</button>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="/FrontEnd/images/TES-5_allgames.avif" alt="The Elder Scrolls V: Skyrim">
+                <div class="game-info">
+                    <h3>The Elder Scrolls V: Skyrim</h3>
+                    <button class="add-to-cart-btn" data-game-title="The Elder Scrolls V: Skyrim" data-game-image="/FrontEnd/images/TES-5_allgames.avif">Add to Cart</button>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="/FrontEnd/images/Bioshock_allgames.jpg" alt="BioShock">
+                <div class="game-info">
+                    <h3>BioShock</h3>
+                    <button class="add-to-cart-btn" data-game-title="BioShock" data-game-image="/FrontEnd/images/Bioshock_allgames.jpg">Add to Cart</button>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="/FrontEnd/images/god-of-war-4_allgames.jpg" alt="God of War">
+                <div class="game-info">
+                    <h3>God of War</h3>
+                    <button class="add-to-cart-btn" data-game-title="God of War" data-game-image="/FrontEnd/images/god-of-war-4_allgames.jpg">Add to Cart</button>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="/FrontEnd/images/Dark_Souls_allgames.avif" alt="Dark Souls">
+                <div class="game-info">
+                    <h3>Dark Souls: Remastered</h3>
+                    <button class="add-to-cart-btn" data-game-title="Dark Souls: Remastered" data-game-image="/FrontEnd/images/Dark_Souls_allgames.avif">Add to Cart</button>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="/FrontEnd/images/fallout-4_allgames.jpeg" alt="Fallout 4">
+                <div class="game-info">
+                    <h3>Fallout 4</h3>
+                    <button class="add-to-cart-btn" data-game-title="Fallout 4" data-game-image="/FrontEnd/images/fallout-4_allgames.jpeg">Add to Cart</button>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="/FrontEnd/images/portal-2_allgames.jpg" alt="Portal 2">
+                <div class="game-info">
+                    <h3>Portal 2</h3>
+                    <button class="add-to-cart-btn" data-game-title="Portal 2" data-game-image="/FrontEnd/images/portal-2_allgames.jpg">Add to Cart</button>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="/FrontEnd/images/re4_allgames.jpg" alt="Resident Evil 4">
+                <div class="game-info">
+                    <h3>Resident Evil 4</h3>
+                    <button class="add-to-cart-btn" data-game-title="Resident Evil 4" data-game-image="/FrontEnd/images/re4_allgames.jpg">Add to Cart</button>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="/FrontEnd/images/celeste_allgames.webp" alt="Celeste">
+                <div class="game-info">
+                    <h3>Celeste</h3>
+                    <button class="add-to-cart-btn" data-game-title="Celeste" data-game-image="/FrontEnd/images/celeste_allgames.webp">Add to Cart</button>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="/FrontEnd/images/ori-and-the-blind-forrest_allgames.jpg" alt="Ori and the Blind Forest">
+                <div class="game-info">
+                    <h3>Ori and the Blind Forest</h3>
+                    <button class="add-to-cart-btn" data-game-title="Ori and the Blind Forest" data-game-image="/FrontEnd/images/ori-and-the-blind-forrest_allgames.jpg">Add to Cart</button>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="/FrontEnd/images/undertale_allgames.webp" alt="Undertale">
+                <div class="game-info">
+                    <h3>Undertale</h3>
+                    <button class="add-to-cart-btn" data-game-title="Undertale" data-game-image="/FrontEnd/images/undertale_allgames.webp">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 GAME LOG. All rights reserved.</p>
+    </footer>
+    <script src="/FrontEnd/scripts/app.js"></script>
+</body>
+
+</html>

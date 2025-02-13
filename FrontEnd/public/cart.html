@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Log - Cart</title>
+    <link rel="stylesheet" href="/FrontEnd/views/cart.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle Navigation Menu">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5 0 0 1 0 1H3a.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5 0 0 1 0 1H3a.5 0 0 1-.5-.5zm0-4a.5 0 0 1 .5-.5h10a.5 0 0 1 0 1H3a.5 0 0 1-.5-.5z"/>
+            </svg>
+        </button>
+        <nav>
+            <a href="/FrontEnd/public/index.html" class="logo">GAME LOG</a>
+        </nav>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <ul>
+            <li><a href="/FrontEnd/public/index.html">Home</a></li>
+            <li><a href="/FrontEnd/public/allgames.html">All Games</a></li>
+            <li><a href="/FrontEnd/public/cart.html">Cart</a></li>
+            <li><a href="/FrontEnd/public/library.html">Library</a></li>
+        </ul>
+    </aside>
+
+    <div class="container">
+        <div id="auth-message" style="display:none; text-align:center; padding: 50px;">
+            <h1>Please Register or Login</h1>
+            <p>You need to be logged in to view your cart.</p>
+            <a href="/FrontEnd/public/login.html">Login</a> or <a href="/FrontEnd/public/register.html">Register</a>
+        </div>
+
+        <div class="cart-content" style="display:none;">
+            <h1>Your Cart</h1>
+            <div class="cart-items">
+                <!-- Items will be added here -->
+            </div>
+            <div class="cart-total">
+                <p>Total: $0.00</p>
+            </div>
+            <button class="buy-all-button">Buy All</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 GAME LOG. All rights reserved.</p>
+    </footer>
+    <script src="/FrontEnd/scripts/cart.js"></script>
+    <script src="/FrontEnd/scripts/app.js"></script>
+</body>
+
+</html>

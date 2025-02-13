@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Log - Login</title>
+    <link rel="stylesheet" href="/FrontEnd/views/auth.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">  <!-- Add google Font-->
+</head>
+
+<body>
+    <div class="video-background">
+        <video autoplay loop muted playsinline>
+            <source src="/FrontEnd/video/Timeline 2.mov" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <a href="/FrontEnd/public/index.html" class="logo">GAME LOG</a>
+    <div class="container login-container">
+        <h1>Login</h1>
+        <form class="login-form">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+            <div class="error-message" style="color: red; margin-top: 10px;"></div>
+            <button type="submit">Log In</button>
+        </form>
+    </div>
+    <script src="/FrontEnd/scripts/login.js"></script>
+</body>
+
+</html>

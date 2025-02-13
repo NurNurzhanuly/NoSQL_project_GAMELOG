@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Log</title>
+    <link rel="stylesheet" href="/FrontEnd/views/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle Navigation Menu">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+            </svg>
+        </button>
+        <nav>
+            <a href="/FrontEnd/public/index.html" class="logo">GAME LOG</a>
+            <ul id="user-nav">
+                <li id="login-button"><a href="/FrontEnd/public/login.html">Login</a></li>
+                <li id="register-button"><a href="/FrontEnd/public/register.html">Register</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <ul>
+            <li><a href="/FrontEnd/public/index.html">Home</a></li>
+            <li><a href="/FrontEnd/public/allgames.html">All Games</a></li>
+            <li><a href="/FrontEnd/public/cart.html">Cart</a></li>
+            <li><a href="/FrontEnd/public/library.html">Library</a></li>
+        </ul>
+    </aside>
+
+    <div class="hero">
+        <h1>Unlock the Ultimate Gaming Experience</h1>
+        <p>Discover, Play, and Dominate in the world of gaming.</p>
+        <button>Learn More</button>
+    </div>
+
+    <section class="latest-games">
+        <h2>Latest Games</h2>
+        <div class="games-grid">
+            <div class="game-card">
+                <img src="/FrontEnd/images/Baldur's Gate 3.avif" alt="Baldur's Gate 3">
+                <h3>Baldur's Gate 3</h3>
+            </div>
+            <div class="game-card">
+                <img src="/FrontEnd/images/Starfield.jpg" alt="Starfield">
+                <h3>Starfield</h3>
+            </div>
+            <div class="game-card">
+                <img src="/FrontEnd/images/Lies_of_P_logo.jpeg" alt="Lies of P">
+                <h3>Lies of P</h3>
+            </div>
+            <div class="game-card">
+                <img src="/FrontEnd/images/AC_mirage.webp" alt="Assassin's Creed Mirage">
+                <h3>Assassin's Creed Mirage</h3>
+            </div>
+        </div>
+    </section>
+
+    <section class="old-games">
+        <h2>Old Games</h2>
+        <div class="games-grid">
+            <div class="game-card">
+                <img src="/FrontEnd/images/GTA-VC.jpg" alt="GTA: Vice City">
+                <h3>GTA: Vice City</h3>
+            </div>
+            <div class="game-card">
+                <img src="/FrontEnd/images/Max Payne.jpg" alt="Max Payne">
+                <h3>Max Payne</h3>
+            </div>
+            <div class="game-card">
+                <img src="/FrontEnd/images/diablo2.jpg" alt="Diablo 2">
+                <h3>Diablo 2</h3>
+            </div>
+            <div class="game-card">
+                <img src="/FrontEnd/images/HL2.jpg" alt="Half-Life 2">
+                <h3>Half-Life 2</h3>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-menu">
+            <div class="footer-column">
+                <h3>Products</h3>
+                <ul>
+                    <li><a href="#">Graphics</a></li>
+                    <li><a href="#">Music</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Need Help?</h3>
+                <ul>
+                    <li><a href="#">Terms and condition</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Refund policy</a></li>
+                    <li><a href="#">Support</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Follow us:</h3>
+                <input type="email" placeholder="Enter Email">
+            </div>
+        </div>
+        <p>© 2025 GAME LOG. All rights reserved.</p>
+    </footer>
+
+    <script src="/FrontEnd/scripts/app.js"></script>
+</body>
+</html>
