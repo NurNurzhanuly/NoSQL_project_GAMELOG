@@ -1,0 +1,232 @@
+/* Global styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #1a1a1a;
+    color: #fff;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 800px;
+}
+
+.games-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 50px;
+    margin-top: 40px;
+}
+
+.game-card {
+    display: flex;
+    flex-direction: row;
+    transition: transform 0.3s, box-shadow 0.3s;
+    height: 262px;
+    width: 100%;
+    position: relative;
+    align-items: center;
+}
+
+.game-card:hover {
+    transform: translateY(-5px);
+}
+
+.game-card img {
+    width: auto;
+    max-width: 40%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px 0 0 10px;
+    margin-bottom: 0;
+}
+
+.game-info {
+    width: 60%;
+    height: 100%;
+    background-color: #333;
+    border-radius: 0 10px 10px 0;
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.game-card h3 {
+    margin: 0;
+    font-size: 1.3em;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    left: 20px;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+/* Styles for the menu toggle button */
+header .menu-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    margin-right: 10px;
+    position: relative;
+    z-index: 10;
+}
+
+header .menu-toggle svg {
+    fill: #fff;
+    transition: fill 0.3s;
+}
+
+header .menu-toggle:hover svg {
+    fill: #ff6f61;
+}
+header {
+    background: linear-gradient(135deg, #1a1a1a, #333);
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+nav {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+nav .logo {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #ff6f61;
+    margin-left: 0;
+    text-decoration: none;
+}
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 250px;
+    height: 100%;
+    background-color: #2a2a2a;
+    padding-top: 20px;
+    transition: left 0.3s ease;
+    z-index: 1000;
+}
+
+.sidebar.open {
+    left: 0;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 10px 0;
+}
+
+.sidebar ul li a {
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    padding: 15px;
+    font-size: 1.2em;
+    transition: background-color 0.3s;
+}
+
+.sidebar ul li a:hover {
+    background-color: #ff6f61;
+}
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #333;
+    color: #fff;
+    margin-top: 50px;
+}
+
+/* Styles for the search container */
+.search-container {
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    overflow: hidden;
+    border: 1px solid #444;
+    transition: border-color 0.3s;
+    margin-left: auto;
+}
+
+.search-container:focus-within {
+    border-color: #ff6f61;
+}
+
+.search-input {
+    padding: 10px 15px;
+    border: none;
+    background-color: transparent;
+    color: #fff;
+    font-size: 1em;
+    flex-grow: 1;
+}
+
+.search-input::placeholder {
+    color: #aaa;
+}
+
+.search-input:focus {
+    outline: none;
+}
+
+.search-button {
+    padding: 10px;
+    border: none;
+    background-color: transparent;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.search-button:hover {
+    background-color: #333;
+}
+
+.search-button svg {
+    fill: #fff;
+}
+
+.add-to-cart-btn {
+    background-color: #ff6f61;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s;
+    align-self: flex-start; /* Выравниваем кнопку вверху контейнера */
+}
+
+.add-to-cart-btn:hover {
+    background-color: #e65a50;
+}
+.add-to-library-btn {
+    background-color: #6c757d; /* Grey color */
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s;
+    margin-left: 5px; /* Add some spacing between the buttons */
+    align-self: flex-start; /* Выравниваем кнопку вверху контейнера */
+}

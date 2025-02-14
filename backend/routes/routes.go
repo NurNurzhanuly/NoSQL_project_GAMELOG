@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"github.com/OrazKhairulla/Online-Gaming-Marketplace/backend/controllers"
-	"github.com/OrazKhairulla/Online-Gaming-Marketplace/backend/middleware"
+	"github.com/NurNurzhanuly/NoSQL_project_GAMELOG/backend/controllers"
+	"github.com/NurNurzhanuly/NoSQL_project_GAMELOG/backend/middleware"
 	"github.com/gin-gonic/gin"
 )
 

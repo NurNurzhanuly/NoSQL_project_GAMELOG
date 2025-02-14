@@ -4,9 +4,6 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/OrazKhairulla/Online-Gaming-Marketplace/backend/database"
-	"github.com/OrazKhairulla/Online-Gaming-Marketplace/backend/routes"
-
 	"github.com/gin-gonic/gin"
 )
 

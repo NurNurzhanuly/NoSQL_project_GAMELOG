@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/OrazKhairulla/Online-Gaming-Marketplace/backend/database"
-	"github.com/OrazKhairulla/Online-Gaming-Marketplace/backend/model"
-	jwtServices "github.com/OrazKhairulla/Online-Gaming-Marketplace/backend/services"
+	"github.com/NurNurzhanuly/NoSQL_project_GAMELOG/backend/database"
+	"github.com/NurNurzhanuly/NoSQL_project_GAMELOG/backend/model"
+
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
