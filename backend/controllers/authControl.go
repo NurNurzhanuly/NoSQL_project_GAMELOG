@@ -8,6 +8,7 @@ import (
 
 	"github.com/NurNurzhanuly/NoSQL_project_GAMELOG/backend/database"
 	"github.com/NurNurzhanuly/NoSQL_project_GAMELOG/backend/model"
+	jwtServices "github.com/NurNurzhanuly/NoSQL_project_GAMELOG/backend/services"
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"

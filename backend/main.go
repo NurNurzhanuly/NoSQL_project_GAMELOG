@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/NurNurzhanuly/NoSQL_project_GAMELOG/backend/database"
+	"github.com/NurNurzhanuly/NoSQL_project_GAMELOG/backend/routes"
+
 	"github.com/gin-gonic/gin"
 )
 
