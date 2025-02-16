@@ -5,12 +5,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const libraryHeader = document.getElementById('library-header');
     const libraryList = document.getElementById('library-list');
 
-    // check if user is logged in
     if (username) {
+        // Пользователь авторизован
         accountInfo.style.display = 'block';
         libraryHeader.style.display = 'block';
         libraryList.style.display = 'grid';
     } else {
+        // Пользователь не авторизован
         authMessage.style.display = 'block';
     }
 });

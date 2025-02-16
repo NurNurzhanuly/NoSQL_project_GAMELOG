@@ -5,9 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game Log - Register</title>
-    <link rel="icon" type="image/x-icon" href="/FrontEnd/public/images/favicon.ico">
     <link rel="stylesheet" href="/FrontEnd/views/auth.css">
-    <link rel="stylesheet" href="/FrontEnd/views/layout.css">
     <a href="/FrontEnd/public/index.html" class="logo">GAME LOG</a>
     <link
         href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap"
@@ -47,7 +45,7 @@
     </div>
     <script>
         document.getElementById('registerForm').addEventListener('submit', async function (event) {
-            event.preventDefault();
+            event.preventDefault(); // Отключаем стандартное поведение формы
 
             const username = document.getElementById('username').value;
             const email = document.getElementById('email').value;
@@ -55,7 +53,7 @@
             const confirmPassword = document.getElementById('confirmPassword').value;
             const registrationMessage = document.getElementById('registrationMessage');
 
-            // check if passwords match
+            // Проверка совпадения паролей
             if (password !== confirmPassword) {
                 registrationMessage.textContent = 'Passwords do not match!';
                 registrationMessage.style.color = 'red';
@@ -75,9 +73,6 @@
                     registrationMessage.textContent = 'Registration successful!';
                     registrationMessage.style.color = 'green';
                     document.getElementById('registerForm').reset();
-                    setTimeout(() => {
-                        window.location.href = 'login.html';
-                    }, 2000);
                 } else {
                     const data = await response.json();
                     registrationMessage.textContent = data.message || 'Registration failed!';

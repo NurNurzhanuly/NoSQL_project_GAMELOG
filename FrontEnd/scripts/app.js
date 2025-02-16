@@ -92,23 +92,24 @@ document.addEventListener("DOMContentLoaded", function () {
     const navList = document.querySelector("#user-nav");
 
     if (username) {
+        // Удалить кнопки "Login" и "Register"
         navList.innerHTML = "";
 
-        // add user and logout links
+        // Добавить имя пользователя и кнопку выхода
         const userElement = document.createElement("li");
         const logoutElement = document.createElement("li");
 
-        // user link
+        // Ссылка на библиотеку с именем пользователя
         const userLink = document.createElement("a");
         userLink.href = "/FrontEnd/public/library.html";
         userLink.textContent = username;
 
-        // logout link
+        // Кнопка выхода
         const logoutLink = document.createElement("a");
         logoutLink.href = "#";
         logoutLink.textContent = "Logout";
         logoutLink.addEventListener("click", function () {
-            // delete token and username from localStorage
+            // Удаляем пользователя из localStorage и перезагружаем страницу
             localStorage.removeItem("username");
             window.location.href = "/FrontEnd/public/index.html";
         });
@@ -156,21 +157,21 @@ if (usernameDisplay && emailDisplay && usernameInput && emailInput && editProfil
         const newEmail = emailInput.value;
 
         try {
-            const response = await fetch('/api/user/update', {
+            const response = await fetch('/api/user/update', { // Замените на ваш actual API endpoint
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    'Authorization': 'Bearer ' + localStorage.getItem('token') // Если требуется авторизация
                 },
                 body: JSON.stringify({ username: newUsername, email: newEmail })
             });
 
             if (response.ok) {
-                // success handling
+                // Обработка успешного ответа
                 console.log('Profile updated successfully!');
                 localStorage.setItem('username', newUsername);
 
-                // Update email in localStorage and display if it was changed
+                // Проверяем, что email пришел с сервера
                 if (newEmail) {
                     localStorage.setItem('email', newEmail);
                     emailDisplay.textContent = newEmail;
@@ -179,16 +180,16 @@ if (usernameDisplay && emailDisplay && usernameInput && emailInput && editProfil
                 usernameDisplay.textContent = newUsername;
 
             } else {
-                // error handling
+                // Обработка ошибки
                 console.error('Error updating profile:', response.statusText);
-                alert('Failed to update profile. Please try again.');
+                alert('Failed to update profile. Please try again.'); // Или отобразите более информативное сообщение об ошибке
             }
         } catch (error) {
             console.error('Error updating profile:', error);
             alert('An error occurred. Please try again later.');
         }
 
-        // change the display back to normal
+        // Возвращаем все в исходное состояние
         usernameDisplay.style.display = 'inline';
         emailDisplay.style.display = 'inline';
         usernameInput.style.display = 'none';

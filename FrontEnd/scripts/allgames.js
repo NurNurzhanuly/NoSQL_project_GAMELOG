@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const gamesGrid = document.getElementById("all-games-grid");
     const searchInput = document.querySelector('.search-input');
 
+    // Функция загрузки игр
     async function loadGames(searchTerm = "") {
         try {
             const url = searchTerm
@@ -10,7 +11,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             const response = await fetch(url);
             if (!response.ok) throw new Error("Failed to fetch games");
             const games = await response.json();
-            gamesGrid.innerHTML = "";
+            gamesGrid.innerHTML = ""; // Очищаем текущий контент
             games.forEach((game) => {
                 const gameCard = document.createElement("div");
                 gameCard.classList.add("game-card");
@@ -28,14 +29,14 @@ document.addEventListener("DOMContentLoaded", async function () {
                 gamesGrid.appendChild(gameCard);
             });
 
-            // add event listeners to all add to cart buttons
+            // Добавляем обработчики событий на новые кнопки
             addCartButtonListeners();
         } catch (error) {
             console.error("Failed to load games:", error);
         }
     }
 
-    // function to add event listeners to all add to cart buttons
+    // Функция добавления обработчиков событий для кнопок
     function addCartButtonListeners() {
         const isUserLoggedIn = !!localStorage.getItem("token");
         document.querySelectorAll(".add-to-cart-btn").forEach((button) => {
@@ -47,12 +48,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
                 const gameId = this.getAttribute("data-game-id");
                 try {
-                    const token = localStorage.getItem("token");
+                    const token = localStorage.getItem("token"); // Получаем токен из localStorage
                     const response = await fetch(`/api/cart`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
-                            "Authorization": `Bearer ${token}`,
+                            "Authorization": `Bearer ${token}`, // Добавляем токен в заголовок
                         },
                         body: JSON.stringify({
                             game_id: gameId,
@@ -71,9 +72,10 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
     }
 
+    // Загружаем все игры по умолчанию
     loadGames();
 
-    // add event listener for search input
+    // Добавляем обработчик событий для поиска
     searchInput.addEventListener("input", function () {
         const searchTerm = searchInput.value.trim();
         loadGames(searchTerm);

@@ -1,9 +1,17 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #1a1a1a;
+    color: #fff;
+}
+
 .container {
     max-width: 1200px;
     margin: 20px auto;
     padding: 30px;
-    background-color: var(--background-color-secondary);
-    border-radius: var(--border-radius-xlarge);
+    background-color: #2a2a2a;
+    border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
@@ -11,136 +19,249 @@ h1 {
     text-align: center;
     margin-bottom: 40px;
     font-size: 2.8em;
+    color: #ff6f61;
+    font-family: 'Orbitron', sans-serif;
 }
 
 .library-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    /* Увеличиваем minmax */
     gap: 30px;
     padding: 20px;
+    /* Добавляем внутренние отступы */
 }
 
-.library-grid__game-card {
-    background-color: var(--secondary-color);
-    border-radius: var(--border-radius-xlarge);
+.game-card {
+    background-color: #333;
+    border-radius: 15px;
+    /* Более выраженные углы */
     overflow: hidden;
-    transition: transform var(--transition), box-shadow var(--transition);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    /* Мягкая тень */
 }
 
-.library-grid__game-card:hover {
+.game-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    /* Более выраженная тень при наведении */
 }
 
-.library-grid__image {
+.game-card img {
     width: 100%;
     height: 220px;
+    /* Увеличиваем высоту изображения */
     object-fit: cover;
-    transition: transform var(--transition);
+    transition: transform 0.3s ease;
+    /* Плавное изменение масштаба */
 }
 
-.library-grid__game-card:hover .library-grid__image {
+.game-card:hover img {
     transform: scale(1.1);
+    /* Небольшое увеличение при наведении */
 }
 
-.library-grid__content {
+.game-card-content {
     padding: 25px;
+    /* Увеличиваем отступы */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
 }
 
-.library-grid__title {
+.game-card-title {
     font-size: 1.7em;
+    /* Увеличиваем размер шрифта */
     margin-bottom: 15px;
+    /* Увеличиваем отступ */
     color: #eee;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
 }
 
-.account-info {
-    background-color: var(--secondary-color);
-    border-radius: var(--border-radius-xlarge);
+/* Styles for the menu toggle button */
+header .menu-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    margin-right: 10px;
+    position: relative;
+    z-index: 10;
+}
+
+header .menu-toggle svg {
+    fill: #fff;
+    transition: fill 0.3s;
+}
+
+header .menu-toggle:hover svg {
+    fill: #ff6f61;
+}
+
+header {
+    background: linear-gradient(135deg, #1a1a1a, #333);
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+nav .logo {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #ff6f61;
+    margin-left: 10px;
+    text-decoration: none;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 250px;
+    height: 100%;
+    background-color: #2a2a2a;
+    padding-top: 20px;
+    transition: left 0.3s ease;
+    z-index: 1000;
+}
+
+.sidebar.open {
+    left: 0;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 10px 0;
+}
+
+.sidebar ul li a {
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    padding: 15px;
+    font-size: 1.2em;
+    transition: background-color 0.3s;
+}
+
+.sidebar ul li a:hover {
+    background-color: #ff6f61;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #333;
+    color: #fff;
+    margin-top: 50px;
+}
+
+#account-info {
+    background-color: #333;
+    border-radius: 15px;
     padding: 30px;
     margin-bottom: 30px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-.account-info__title {
+#account-info h1 {
     font-size: 2em;
     color: #eee;
     margin-bottom: 20px;
     text-align: left;
 }
 
-.account-info__paragraph {
+#account-info p {
     font-size: 1.2em;
     color: #ccc;
     margin-bottom: 10px;
     text-align: left;
 }
 
-.account-info__input {
+/* Стили для input */
+#account-info input[type="text"],
+#account-info input[type="email"] {
     background-color: #444;
     border: none;
-    border-radius: var(--border-radius);
-    color: var(--text-color);
+    border-radius: 5px;
+    color: #fff;
     padding: 8px;
     font-size: 1.1em;
     margin-left: 5px;
     width: auto;
+    /* Автоматическая ширина */
     display: inline;
+    /* Важно для правильного отображения */
 }
 
-.account-info__input:focus {
+/* Убираем рамку при фокусе */
+#account-info input[type="text"]:focus,
+#account-info input[type="email"]:focus {
     outline: none;
-    border: 1px solid var(--primary-color);
+    border: 1px solid #ff6f61;
+    /* Добавляем рамку при фокусе */
 }
 
-.account-info__button {
-    background-color: var(--primary-color);
-    color: var(--text-color);
+#account-info button {
+    background-color: #ff6f61;
+    color: #fff;
     border: none;
     padding: 10px 20px;
-    border-radius: var(--border-radius);
+    border-radius: 7px;
     cursor: pointer;
     font-size: 1.1em;
-    transition: background-color var(--transition);
+    transition: background-color 0.3s ease;
     margin-top: 10px;
+    /* Добавляем отступ сверху для кнопок */
 }
 
-.account-info__button:hover {
+#account-info button:hover {
     background-color: #e65a50;
 }
 
-.auth-message {
+#auth-message {
     text-align: center;
     padding: 50px;
-    background-color: var(--secondary-color);
-    border-radius: var(--border-radius-xlarge);
+    background-color: #333;
+    border-radius: 15px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     color: #eee;
 }
 
-.auth-message__title {
+#auth-message h1 {
     font-size: 2.5em;
     margin-bottom: 20px;
 }
 
-.auth-message__paragraph {
+#auth-message p {
     font-size: 1.2em;
     margin-bottom: 30px;
 }
 
-.auth-message__link {
-    color: var(--primary-color);
+#auth-message a {
+    color: #ff6f61;
     text-decoration: none;
     font-size: 1.2em;
     margin: 0 10px;
-    transition: color var(--transition);
+    transition: color 0.3s ease;
 }
 
-.auth-message__link:hover {
+#auth-message a:hover {
     color: #e65a50;
 }
