@@ -3,9 +3,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const authMessage = document.getElementById('auth-message');
     const cartContent = document.querySelector('.cart-content');
 
-    console.log('Username in localStorage:', localStorage.getItem('username'));
-    console.log('Token in localStorage:', localStorage.getItem('token'));
-
     if (username) {
         cartContent.style.display = 'block';
         loadCartItems();
@@ -17,8 +14,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const cartItemsContainer = document.querySelector('.cart-items');
 
         try {
-            console.log('Fetching cart items...');
-
             const response = await fetch('/api/cart', {
                 method: 'GET',
                 headers: {
@@ -28,12 +23,10 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             if (!response.ok) {
-                console.error('Failed to fetch cart items. Status:', response.status);
                 throw new Error('Failed to fetch cart items');
             }
 
             const cartData = await response.json();
-            console.log('Cart data received:', cartData);
 
             if (!cartData.items || cartData.items.length === 0) {
                 cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
@@ -44,8 +37,6 @@ document.addEventListener('DOMContentLoaded', function () {
             let cartTotal = 0;
 
             for (const item of cartData.items) {
-                console.log('Fetching game details for item:', item);
-
                 const gameResponse = await fetch(`/api/games/${item.game_id}`, {
                     method: 'GET',
                     headers: {
@@ -55,34 +46,28 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
 
                 if (!gameResponse.ok) {
-                    console.error('Failed to fetch game details. Status:', gameResponse.status);
                     throw new Error('Failed to fetch game details');
                 }
 
                 const gameData = await gameResponse.json();
-                console.log('Game data received:', gameData);
-
-                // display the game in the cart
                 const cartItemDiv = document.createElement('div');
                 cartItemDiv.classList.add('cart-item');
 
                 cartItemDiv.innerHTML = `
-                <img src="${gameData.image}" alt="${gameData.title}">
-                <div class="cart-item-details">
-                    <h3 class="cart-item-title">${gameData.title}</h3>
-                    <p class="cart-item-price">$${gameData.price.toFixed(2)}</p>
-                </div>
-                <button class="remove-from-cart-btn" data-id="${item.game_id}">Remove</button>
-            `;
+                    <img src="${gameData.image}" alt="${gameData.title}">
+                    <div class="cart-item-details">
+                        <h3 class="cart-item-title">${gameData.title}</h3>
+                        <p class="cart-item-price">$${gameData.price.toFixed(2)}</p>
+                    </div>
+                    <button class="remove-from-cart-btn" data-id="${item.game_id}">Remove</button>
+                `;
 
                 cartItemsContainer.appendChild(cartItemDiv);
                 cartTotal += gameData.price;
             }
 
-            // render the total price
             document.querySelector('.cart-total p').textContent = `Total: $${cartTotal.toFixed(2)}`;
 
-            // add event listeners to all remove from cart buttons
             const removeFromCartButtons = document.querySelectorAll('.remove-from-cart-btn');
             removeFromCartButtons.forEach(button => {
                 button.addEventListener('click', async function () {
@@ -101,10 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             throw new Error('Failed to remove item from cart');
                         }
 
-                        // delete the item from the cart
                         button.parentElement.remove();
-
-                        // correct the total price
                         cartTotal -= parseFloat(button.parentElement.querySelector('.cart-item-price').textContent.replace('$', ''));
                         document.querySelector('.cart-total p').textContent = `Total: $${cartTotal.toFixed(2)}`;
                     } catch (error) {
@@ -113,8 +95,46 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             });
         } catch (error) {
-            console.error('Error loading cart items:', error);
             cartItemsContainer.innerHTML = '<p>Failed to load cart items. Please try again later.</p>';
         }
     }
+
+    const buyAllBtn = document.getElementById("buy-all-btn");
+    const confirmPurchaseBtn = document.getElementById("confirm-purchase-btn");
+    const cancelPurchaseBtn = document.getElementById("cancel-purchase-btn");
+    const buyConfirmationModal = document.getElementById("buy-confirmation-modal");
+    const totalPriceMessage = document.getElementById("total-price-message");
+
+    let totalPrice = 0.00;
+
+    // Открытие окна подтверждения покупки
+    buyAllBtn.addEventListener("click", function () {
+        totalPriceMessage.textContent = `Do you want to buy these games for a total of $${totalPrice.toFixed(2)}?`;
+        buyConfirmationModal.classList.remove("hidden");
+    });
+
+    // Подтверждение покупки
+    confirmPurchaseBtn.addEventListener("click", function () {
+        fetch("/api/cart/purchase", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("token")}`,
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message || "Purchase completed successfully!");
+                buyConfirmationModal.classList.add("hidden");
+                loadCartItems(); // обновляем корзину
+            })
+            .catch(error => {
+                alert("Error completing purchase");
+                console.error(error);
+            });
+    });
+
+    // Отмена покупки
+    cancelPurchaseBtn.addEventListener("click", function () {
+        buyConfirmationModal.classList.add("hidden");
+    });
 });

@@ -27,5 +27,6 @@ func SetupRoutes(r *gin.Engine) {
 		protected.POST("/cart", controllers.AddToCart)
 		protected.DELETE("/cart/:game_id", controllers.RemoveFromCart)
 		protected.GET("/cart", controllers.GetCart)
+		protected.POST("/cart/purchase", controllers.PurchaseAllGames)
 	}
 }

@@ -166,3 +166,50 @@ func RemoveFromCart(c *gin.Context) {
 	log.Println("Item removed from cart:", gameID)
 	c.JSON(http.StatusOK, gin.H{"message": "Item removed from cart"})
 }
+
+func PurchaseAllGames(c *gin.Context) {
+	userID, exists := c.Get("userID")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not authorized"})
+		return
+	}
+
+	userIDStr, ok := userID.(string)
+	if !ok {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Invalid user ID format"})
+		return
+	}
+
+	userIDObj, err := primitive.ObjectIDFromHex(userIDStr)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Invalid user ID format"})
+		return
+	}
+
+	cartCollection := database.GetCollection("cart")
+	userCollection := database.GetCollection("users")
+
+	var cart model.Cart
+	err = cartCollection.FindOne(context.TODO(), bson.M{"user_id": userIDObj}).Decode(&cart)
+	if err == mongo.ErrNoDocuments {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Cart not found"})
+		return
+	}
+
+	// Обновляем поле owned_games для пользователя
+	update := bson.M{"$addToSet": bson.M{"owned_games": bson.M{"$each": cart.Items}}}
+	_, err = userCollection.UpdateOne(context.TODO(), bson.M{"_id": userIDObj}, update)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error updating owned games"})
+		return
+	}
+
+	// Очищаем корзину пользователя
+	_, err = cartCollection.DeleteOne(context.TODO(), bson.M{"user_id": userIDObj})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error clearing cart"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Purchase completed successfully"})
+}
