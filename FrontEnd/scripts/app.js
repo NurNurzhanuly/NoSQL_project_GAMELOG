@@ -25,66 +25,6 @@ document.addEventListener('DOMContentLoaded', function () {
             card.style.transform = 'translateY(0)';
         });
     });
-
-    // Library page functionality
-    const libraryList = document.getElementById('library-list');
-    if (libraryList) {
-        let libraryItems = JSON.parse(localStorage.getItem('libraryItems')) || [];
-        const editLibraryBtn = document.getElementById('edit-library-btn');
-        const deleteSelectedBtn = document.getElementById('delete-selected-btn');
-        let isEditing = false; // Track editing mode
-
-        if (libraryItems.length === 0) {
-            libraryList.innerHTML = '<p>Your library is empty.</p>';
-            return;
-        }
-        function updateLibraryDisplay() {
-            libraryList.innerHTML = ''; // Clear existing list
-            libraryItems.forEach(item => {
-                const gameCard = document.createElement('div');
-                gameCard.classList.add('game-card');
-                const checkboxHTML = isEditing ? `<input type="checkbox" data-index="${index}" class="delete-checkbox">` : '';
-
-                gameCard.innerHTML = `
-                    <img src="${item.image}" alt="${item.title}">
-                    <div class="game-card-content">
-                        <h3 class="game-card-title">${item.title}</h3>
-                          ${checkboxHTML}
-                    </div>
-                `;
-
-                libraryList.appendChild(gameCard);
-            });
-        }
-
-        updateLibraryDisplay();
-        editLibraryBtn.addEventListener('click', function () {
-            isEditing = !isEditing; // Toggle editing mode
-            updateLibraryDisplay()
-
-            if (isEditing) {
-                editLibraryBtn.textContent = 'Exit Edit Mode';
-                deleteSelectedBtn.style.display = 'block';
-            } else {
-                editLibraryBtn.textContent = 'Edit Library';
-                deleteSelectedBtn.style.display = 'none';
-            }
-        });
-        deleteSelectedBtn.addEventListener('click', function () {
-            const checkedCheckboxes = document.querySelectorAll('.delete-checkbox:checked');
-            const indicesToDelete = Array.from(checkedCheckboxes).map(checkbox => parseInt(checkbox.dataset.index)).sort((a, b) => b - a);
-
-            indicesToDelete.forEach(index => {
-                libraryItems.splice(index, 1);
-            });
-
-            localStorage.setItem('libraryItems', JSON.stringify(libraryItems));
-            updateLibraryDisplay(); // Refresh the library display
-            isEditing = false;
-            editLibraryBtn.textContent = 'Edit Library';
-            deleteSelectedBtn.style.display = 'none';
-        });
-    }
 });
 
 document.addEventListener("DOMContentLoaded", function () {

@@ -2,123 +2,125 @@ document.addEventListener('DOMContentLoaded', function () {
     const username = localStorage.getItem('username');
     const authMessage = document.getElementById('auth-message');
     const cartContent = document.querySelector('.cart-content');
-
-    console.log('Username in localStorage:', localStorage.getItem('username'));
-    console.log('Token in localStorage:', localStorage.getItem('token'));
+    const cartItemsContainer = document.querySelector('.cart-items');
+    const buyAllBtn = document.getElementById("buy-all-btn");
+    const confirmPurchaseBtn = document.getElementById("confirm-purchase-btn");
+    const cancelPurchaseBtn = document.getElementById("cancel-purchase-btn");
+    const buyConfirmationModal = document.getElementById("buy-confirmation-modal");
+    const totalPriceMessage = document.getElementById("total-price-message");
+    let cartTotal = 0;
 
     if (username) {
-        // Пользователь авторизован
         cartContent.style.display = 'block';
         loadCartItems();
     } else {
-        // Пользователь не авторизован
         authMessage.style.display = 'block';
     }
 
     async function loadCartItems() {
-        const cartItemsContainer = document.querySelector('.cart-items');
-
         try {
-            console.log('Fetching cart items...'); // Лог перед запросом
-
-            const response = await fetch('/api/cart', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-
-            if (!response.ok) {
-                console.error('Failed to fetch cart items. Status:', response.status);
-                throw new Error('Failed to fetch cart items');
-            }
+            const response = await fetch('/api/cart', getAuthHeaders());
+            if (!response.ok) throw new Error('Failed to fetch cart items');
 
             const cartData = await response.json();
-            console.log('Cart data received:', cartData); // Лог данных корзины
-
-            if (!cartData.items || cartData.items.length === 0) {
-                cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
-                return;
-            }
-
-            cartItemsContainer.innerHTML = ''; // Очистить контейнер перед добавлением элементов
-
-            let cartTotal = 0; // Общая сумма
-
-            // Перебираем все элементы корзины и отображаем их
-            for (const item of cartData.items) {
-                console.log('Fetching game details for item:', item);
-
-                const gameResponse = await fetch(`/api/games/${item.game_id}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    }
-                });
-
-                if (!gameResponse.ok) {
-                    console.error('Failed to fetch game details. Status:', gameResponse.status);
-                    throw new Error('Failed to fetch game details');
-                }
-
-                const gameData = await gameResponse.json();
-                console.log('Game data received:', gameData);
-
-                // Отображение данных игры
-                const cartItemDiv = document.createElement('div');
-                cartItemDiv.classList.add('cart-item');
-
-                cartItemDiv.innerHTML = `
-                <img src="${gameData.image}" alt="${gameData.title}">
-                <div class="cart-item-details">
-                    <h3 class="cart-item-title">${gameData.title}</h3>
-                    <p class="cart-item-price">$${gameData.price.toFixed(2)}</p>
-                </div>
-                <button class="remove-from-cart-btn" data-id="${item.game_id}">Remove</button>
-            `;
-
-                cartItemsContainer.appendChild(cartItemDiv);
-                cartTotal += gameData.price;
-            }
-
-            // Обновляем общую стоимость корзины
-            document.querySelector('.cart-total p').textContent = `Total: $${cartTotal.toFixed(2)}`;
-
-            // Добавляем обработчики удаления товаров из корзины
-            const removeFromCartButtons = document.querySelectorAll('.remove-from-cart-btn');
-            removeFromCartButtons.forEach(button => {
-                button.addEventListener('click', async function () {
-                    const gameID = button.dataset.id;
-
-                    try {
-                        const deleteResponse = await fetch(`/api/cart/${gameID}`, {
-                            method: 'DELETE',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': `Bearer ${localStorage.getItem('token')}`
-                            }
-                        });
-
-                        if (!deleteResponse.ok) {
-                            throw new Error('Failed to remove item from cart');
-                        }
-
-                        // Удаляем элемент из DOM после успешного удаления
-                        button.parentElement.remove();
-
-                        // Пересчитываем общую стоимость
-                        cartTotal -= parseFloat(button.parentElement.querySelector('.cart-item-price').textContent.replace('$', ''));
-                        document.querySelector('.cart-total p').textContent = `Total: $${cartTotal.toFixed(2)}`;
-                    } catch (error) {
-                        console.error('Error removing item from cart:', error);
-                    }
-                });
-            });
+            updateCartDisplay(cartData.items);
         } catch (error) {
-            console.error('Error loading cart items:', error);
             cartItemsContainer.innerHTML = '<p>Failed to load cart items. Please try again later.</p>';
+            console.error(error);
         }
     }
+
+    function getAuthHeaders() {
+        return {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        };
+    }
+
+    async function fetchGameDetails(gameId) {
+        const response = await fetch(`/api/games/${gameId}`, getAuthHeaders());
+        if (!response.ok) throw new Error('Failed to fetch game details');
+        return await response.json();
+    }
+
+    async function updateCartDisplay(items) {
+        cartItemsContainer.innerHTML = items.length ? '' : '<p>Your cart is empty.</p>';
+        cartTotal = 0;
+
+        for (const item of items) {
+            try {
+                const gameData = await fetchGameDetails(item.game_id);
+                cartTotal += gameData.price;
+                cartItemsContainer.appendChild(createCartItemElement(item.game_id, gameData));
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        updateCartTotal();
+    }
+
+    function createCartItemElement(gameId, gameData) {
+        const cartItemDiv = document.createElement('div');
+        cartItemDiv.classList.add('cart-item');
+        cartItemDiv.innerHTML = `
+            <img src="${gameData.image}" alt="${gameData.title}">
+            <div class="cart-item-details">
+                <h3 class="cart-item-title">${gameData.title}</h3>
+                <p class="cart-item-price">$${gameData.price.toFixed(2)}</p>
+            </div>
+            <button class="remove-from-cart-btn" data-id="${gameId}">Remove</button>
+        `;
+        cartItemDiv.querySelector('.remove-from-cart-btn').addEventListener('click', () => removeFromCart(gameId, cartItemDiv, gameData.price));
+        return cartItemDiv;
+    }
+
+    async function removeFromCart(gameId, itemElement, price) {
+        try {
+            const response = await fetch(`/api/cart/${gameId}`, {
+                method: 'DELETE',
+                headers: getAuthHeaders().headers
+            });
+            if (!response.ok) throw new Error('Failed to remove item from cart');
+
+            itemElement.remove();
+            cartTotal -= price;
+            updateCartTotal();
+        } catch (error) {
+            console.error('Error removing item from cart:', error);
+        }
+    }
+
+    function updateCartTotal() {
+        document.querySelector('.cart-total p').textContent = `Total: $${cartTotal.toFixed(2)}`;
+    }
+
+    buyAllBtn.addEventListener("click", function () {
+        console.log("Buy All button clicked!"); // Проверка
+
+        totalPriceMessage.textContent = `Do you want to buy these games for a total of $${cartTotal.toFixed(2)}?`;
+        buyConfirmationModal.classList.remove("hidden");
+    });
+
+    confirmPurchaseBtn.addEventListener("click", async function () {
+        try {
+            const response = await fetch("/api/cart/purchase", {
+                method: "POST",
+                headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
+            });
+            const data = await response.json();
+            alert(data.message || "Purchase completed successfully!");
+            buyConfirmationModal.classList.add("hidden");
+            loadCartItems();
+        } catch (error) {
+            alert("Error completing purchase");
+            console.error(error);
+        }
+    });
+
+    cancelPurchaseBtn.addEventListener("click", function () {
+        buyConfirmationModal.classList.add("hidden");
+    });
 });

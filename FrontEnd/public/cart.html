@@ -50,7 +50,18 @@
             <div class="cart-total">
                 <p>Total: $0.00</p>
             </div>
-            <button class="buy-all-button">Buy All</button>
+            <button id="buy-all-btn" class="buy-all-button">Buy All</button>
+        
+            <!-- Модальное окно подтверждения покупки -->
+            <div id="buy-confirmation-modal" class="modal hidden">
+                <div class="modal-content">
+                    <p id="total-price-message">Do you want to buy these games?</p>
+                    <div class="modal-buttons">
+                        <button id="confirm-purchase-btn" class="buy-all-button">Confirm Purchase</button>
+                        <button id="cancel-purchase-btn" class="buy-all-button">Cancel</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

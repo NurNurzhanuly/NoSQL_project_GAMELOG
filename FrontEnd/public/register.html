@@ -73,6 +73,9 @@
                     registrationMessage.textContent = 'Registration successful!';
                     registrationMessage.style.color = 'green';
                     document.getElementById('registerForm').reset();
+                    setTimeout(() => {
+                        window.location.href = 'login.html'; // Перенаправление на страницу логина
+                    }, 2000); // Задержка 2 секунды для отображения сообщения пользователю
                 } else {
                     const data = await response.json();
                     registrationMessage.textContent = data.message || 'Registration failed!';
