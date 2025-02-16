@@ -14,8 +14,6 @@ var client *mongo.Client
 
 func ConnectDB() {
 	uri := "mongodb+srv://aitustudent:6t3r1BnNWqa6N38c@gamelog.oo711.mongodb.net/"
-	// Можно использовать локальный URI для тестирования
-	// uri := "mongodb://localhost:27017"
 
 	clientOptions := options.Client().ApplyURI(uri)
 

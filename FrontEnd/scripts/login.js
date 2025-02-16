@@ -1,6 +1,6 @@
 document.querySelector(".login-form").addEventListener("submit", async function (e) {
     e.preventDefault();
-    console.log("Form submitted"); // Проверка отправки формы
+    console.log("Form submitted");
 
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
@@ -14,18 +14,16 @@ document.querySelector(".login-form").addEventListener("submit", async function 
 
         if (response.ok) {
             console.log("Login successful");
-            const data = await response.json(); // Получаем данные из ответа
-
-            // Сохраняем имя пользователя и email в localStorage
+            const data = await response.json();
             localStorage.setItem("username", username);
-            localStorage.setItem("token", data.token); // Сохраняем токен
+            localStorage.setItem("token", data.token);
 
-            //Проверяем, пришел ли email
+            // check if email is provided and save it
             if (data.email) {
                 localStorage.setItem("email", data.email);
             }
 
-            // Перенаправление на главную страницу
+            // redirect to index.html
             window.location.href = "/FrontEnd/public/index.html";
         } else {
             const errorData = await response.json();
@@ -37,7 +35,7 @@ document.querySelector(".login-form").addEventListener("submit", async function 
     }
 });
 
-// Функция для отображения ошибки
+// function to display error message
 function displayError(message) {
     let errorElement = document.querySelector(".error-message");
     if (!errorElement) {

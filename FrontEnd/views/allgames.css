@@ -1,5 +1,3 @@
-/* allgames.css */
-
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -19,7 +17,6 @@
     flex-direction: row;
     transition: transform var(--transition), box-shadow var(--transition);
     height: 262px;
-    /*  Рассмотрите возможность удаления или адаптивности */
     width: 100%;
     position: relative;
     align-items: center;
@@ -50,21 +47,16 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    /*  Выравниваем элементы по началу (слева) */
-    /* justify-content: space-between;  <-- УДАЛЯЕМ ЭТО */
 }
 
 .game-card__title {
     margin: 0 0 10px 0;
-    /*  Сверху, Справа, Снизу, Слева */
     font-size: 1.3em;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
-/*  Стилизуем текстовый контент единообразно */
 .game-card__info p {
     margin: 5px 0;
-    /*  Единообразные отступы для всех параграфов */
 }
 
 .game-card__add-to-cart-btn,

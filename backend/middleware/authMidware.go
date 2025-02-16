@@ -9,7 +9,7 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
-var jwtSecret = []byte("your-secret-key") // Используй тот же ключ
+var jwtSecret = []byte("your-secret-key")
 
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -21,7 +21,7 @@ func AuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		// Проверка формата токена "Bearer <токен>"
+		// check token format
 		parts := strings.Split(authHeader, "Bearer ")
 		if len(parts) != 2 || strings.TrimSpace(parts[1]) == "" {
 			log.Println("Invalid token format:", authHeader)
@@ -32,7 +32,7 @@ func AuthMiddleware() gin.HandlerFunc {
 
 		tokenString := parts[1]
 
-		// Парсинг токена с использованием jwt/v4
+		// parse token
 		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 			return jwtSecret, nil
 		})
@@ -52,8 +52,8 @@ func AuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		// Извлечение user_id и добавление его в контекст
-		userID, ok := claims["user_id"].(string) // Приведение к строке
+		// retrieve user_id from token claims
+		userID, ok := claims["user_id"].(string)
 		if !ok || strings.TrimSpace(userID) == "" {
 			log.Println("user_id missing or invalid in token claims")
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Missing user_id in token"})

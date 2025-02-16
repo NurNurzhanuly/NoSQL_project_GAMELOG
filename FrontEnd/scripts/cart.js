@@ -7,11 +7,9 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log('Token in localStorage:', localStorage.getItem('token'));
 
     if (username) {
-        // Пользователь авторизован
         cartContent.style.display = 'block';
         loadCartItems();
     } else {
-        // Пользователь не авторизован
         authMessage.style.display = 'block';
     }
 
@@ -19,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const cartItemsContainer = document.querySelector('.cart-items');
 
         try {
-            console.log('Fetching cart items...'); // Лог перед запросом
+            console.log('Fetching cart items...');
 
             const response = await fetch('/api/cart', {
                 method: 'GET',
@@ -35,18 +33,16 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             const cartData = await response.json();
-            console.log('Cart data received:', cartData); // Лог данных корзины
+            console.log('Cart data received:', cartData);
 
             if (!cartData.items || cartData.items.length === 0) {
                 cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
                 return;
             }
 
-            cartItemsContainer.innerHTML = ''; // Очистить контейнер перед добавлением элементов
+            cartItemsContainer.innerHTML = '';
+            let cartTotal = 0;
 
-            let cartTotal = 0; // Общая сумма
-
-            // Перебираем все элементы корзины и отображаем их
             for (const item of cartData.items) {
                 console.log('Fetching game details for item:', item);
 
@@ -66,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const gameData = await gameResponse.json();
                 console.log('Game data received:', gameData);
 
-                // Отображение данных игры
+                // display the game in the cart
                 const cartItemDiv = document.createElement('div');
                 cartItemDiv.classList.add('cart-item');
 
@@ -83,10 +79,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 cartTotal += gameData.price;
             }
 
-            // Обновляем общую стоимость корзины
+            // render the total price
             document.querySelector('.cart-total p').textContent = `Total: $${cartTotal.toFixed(2)}`;
 
-            // Добавляем обработчики удаления товаров из корзины
+            // add event listeners to all remove from cart buttons
             const removeFromCartButtons = document.querySelectorAll('.remove-from-cart-btn');
             removeFromCartButtons.forEach(button => {
                 button.addEventListener('click', async function () {
@@ -105,10 +101,10 @@ document.addEventListener('DOMContentLoaded', function () {
                             throw new Error('Failed to remove item from cart');
                         }
 
-                        // Удаляем элемент из DOM после успешного удаления
+                        // delete the item from the cart
                         button.parentElement.remove();
 
-                        // Пересчитываем общую стоимость
+                        // correct the total price
                         cartTotal -= parseFloat(button.parentElement.querySelector('.cart-item-price').textContent.replace('$', ''));
                         document.querySelector('.cart-total p').textContent = `Total: $${cartTotal.toFixed(2)}`;
                     } catch (error) {

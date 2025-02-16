@@ -12,5 +12,5 @@ type Game struct {
 	Developer   string    `json:"developer" bson:"developer"`
 	Publisher   string    `json:"publisher" bson:"publisher"`
 	Platforms   []string  `json:"platforms" bson:"platforms"`
-	ImageURL    string    `json:"image_url" bson:"image_url"` // Хранит относительный путь
+	ImageURL    string    `json:"image_url" bson:"image_url"`
 }

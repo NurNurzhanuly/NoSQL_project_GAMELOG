@@ -16,7 +16,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// Регистрация пользователя
 func Register(c *gin.Context) {
 	var input struct {
 		Username string `json:"username" binding:"required"`
@@ -70,20 +69,19 @@ func Register(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "User registered successfully"})
 }
 
-// Логин пользователя
 func Login(c *gin.Context) {
 	var input struct {
 		Username string `json:"username" binding:"required"`
 		Password string `json:"password" binding:"required"`
 	}
 
-	// Проверка на корректность входных данных
+	// Validate input
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	// Поиск пользователя по username
+	// search for the user in the database
 	collection := database.GetCollection("users")
 	var user model.User
 	err := collection.FindOne(context.TODO(), bson.M{"username": input.Username}).Decode(&user)
@@ -92,21 +90,21 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	// Проверка пароля
+	// password check
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password))
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Неверное имя пользователя или пароль"})
 		return
 	}
 
-	// Генерация JWT токена
+	// generate jwt token
 	token, err := jwtServices.GenerateToken(user.ID.Hex(), user.Username)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка генерации токена"})
 		return
 	}
 
-	// Возвращаем успешный ответ с токеном и сообщением + email
+	// send response
 	c.JSON(http.StatusOK, gin.H{
 		"message":  "Login successful",
 		"token":    token,
@@ -115,9 +113,8 @@ func Login(c *gin.Context) {
 	})
 }
 
-// UpdateUser обновляет имя пользователя и email
 func UpdateUser(c *gin.Context) {
-	userID := c.GetString("userID") // Получаем ID пользователя из middleware
+	userID := c.GetString("userID")
 	if userID == "" {
 		log.Println("userID not found in context")
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
