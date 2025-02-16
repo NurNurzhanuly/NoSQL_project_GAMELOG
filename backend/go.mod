@@ -3,7 +3,6 @@ module github.com/NurNurzhanuly/NoSQL_project_GAMELOG/backend
 go 1.23.4
 
 require (
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.10.0
 	go.mongodb.org/mongo-driver v1.17.2
 	golang.org/x/crypto v0.33.0
