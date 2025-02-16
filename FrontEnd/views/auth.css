@@ -1,72 +1,64 @@
-/*Form Styles*/
-body {
-    font-family: 'Roboto', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #1a1a1a;
-    color: #fff;
-}
-
 .container {
     max-width: 400px;
     margin: 50px auto;
     padding: 30px;
-    background-color: rgba(0, 0, 0, 0.5); /* Черный с прозрачностью 50% */
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: var(--border-radius-large);
+    box-shadow: var(--box-shadow);
     text-align: center;
     position: relative;
     z-index: 1;
 }
 
-.login-form, .register-form {
+.auth-form {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-.form-group {
+.auth-form__group {
     display: flex;
     flex-direction: column;
     text-align: left;
 }
 
-.form-group label {
+.auth-form__label {
     margin-bottom: 5px;
     font-size: 1.1em;
 }
 
-.form-group input {
+.auth-form__input {
     padding: 10px;
     border: 1px solid #444;
-    border-radius: 5px;
-    background-color: #2a2a2a;
-    color: #fff;
+    border-radius: var(--border-radius);
+    background-color: var(--background-color-secondary);
+    color: var(--text-color);
 }
 
-.form-group input::placeholder {
-    color: #aaa;
+.auth-form__input::placeholder {
+    color: var(--text-color-light);
 }
 
-.form-group input:focus {
+.auth-form__input:focus {
     outline: none;
-    border-color: #ff6f61;
+    border-color: var(--primary-color);
 }
 
-.login-form button, .register-form button {
+.auth-form__button {
     padding: 15px 30px;
     font-size: 1.2em;
-    background-color: #ff6f61;
-    color: #fff;
+    background-color: var(--primary-color);
+    color: var(--text-color);
     border: none;
-    border-radius: 5px;
+    border-radius: var(--border-radius);
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color var(--transition);
 }
 
-.login-form button:hover, .register-form button:hover {
+.auth-form__button:hover {
     background-color: #e65a50;
 }
+
 .video-background {
     position: fixed;
     top: 0;
@@ -74,7 +66,7 @@ body {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    z-index: -1; /* Send it to the back */
+    z-index: -1;
 }
 
 .video-background video {
@@ -87,20 +79,4 @@ body {
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
     object-fit: cover;
-}
-
-.container {
-    position: relative;
-    z-index: 1;
-}
-
-.logo {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 40px;
-    font-weight: 700;
-    color: #d52d1e;
-    text-decoration: none;
-    display: block;
-    text-align: center;
-    margin-bottom: 20px;
 }

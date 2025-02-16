@@ -24,28 +24,34 @@ func Register(c *gin.Context) {
 		Password string `json:"password" binding:"required"`
 	}
 
+	// Validate input
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	// Проверка на существование пользователя
+	// Check if user already exists
 	collection := database.GetCollection("users")
 	var existingUser model.User
-	err := collection.FindOne(context.TODO(), bson.M{"email": input.Email}).Decode(&existingUser)
+	// Check if the user already exists by email or username
+	err := collection.FindOne(context.TODO(), bson.M{"$or": []bson.M{
+		{"email": input.Email},
+		{"username": input.Username},
+	}}).Decode(&existingUser)
+
 	if err == nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Пользователь с таким email уже существует"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "A user with this email already exists"})
 		return
 	}
 
-	// Хеширование пароля
+	// Hash the password
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(input.Password), bcrypt.DefaultCost)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка хеширования пароля"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error hashing the password"})
 		return
 	}
 
-	// Создаем нового пользователя
+	// Create a new user
 	newUser := model.User{
 		Username:   input.Username,
 		Email:      input.Email,
@@ -54,14 +60,14 @@ func Register(c *gin.Context) {
 		CreatedAt:  time.Now(),
 	}
 
-	// Сохранение пользователя в MongoDB
+	// Save the user to the database
 	_, err = collection.InsertOne(context.TODO(), newUser)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка создания пользователя"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error creating user"})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Пользователь успешно зарегистрирован"})
+	c.JSON(http.StatusOK, gin.H{"message": "User registered successfully"})
 }
 
 // Логин пользователя
@@ -94,7 +100,7 @@ func Login(c *gin.Context) {
 	}
 
 	// Генерация JWT токена
-	token, err := jwtServices.GenerateToken(user.Username)
+	token, err := jwtServices.GenerateToken(user.ID.Hex(), user.Username)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка генерации токена"})
 		return
@@ -104,7 +110,7 @@ func Login(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message":  "Login successful",
 		"token":    token,
-		"email":    user.Email, // <---- Добавили email
+		"email":    user.Email,
 		"redirect": "/FrontEnd/public/index.html",
 	})
 }
@@ -135,7 +141,7 @@ func UpdateUser(c *gin.Context) {
 		return
 	}
 
-	// Проверяем, не занят ли email другим пользователем (опционально)
+	// Проверяем, не занят ли email другим пользователем
 	collection := database.GetCollection("users")
 	var existingUser model.User
 	err = collection.FindOne(context.TODO(), bson.M{"email": input.Email, "_id": bson.M{"$ne": userObjectID}}).Decode(&existingUser)

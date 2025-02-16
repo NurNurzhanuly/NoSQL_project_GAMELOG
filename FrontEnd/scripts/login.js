@@ -18,11 +18,11 @@ document.querySelector(".login-form").addEventListener("submit", async function 
 
             // Сохраняем имя пользователя и email в localStorage
             localStorage.setItem("username", username);
-             localStorage.setItem("token", data.token); // Сохраняем токен
+            localStorage.setItem("token", data.token); // Сохраняем токен
 
             //Проверяем, пришел ли email
             if (data.email) {
-                 localStorage.setItem("email", data.email);
+                localStorage.setItem("email", data.email);
             }
 
             // Перенаправление на главную страницу

@@ -13,7 +13,9 @@ import (
 var client *mongo.Client
 
 func ConnectDB() {
-	uri := "mongodb://localhost:27017"
+	uri := "mongodb+srv://aitustudent:6t3r1BnNWqa6N38c@gamelog.oo711.mongodb.net/"
+	// Можно использовать локальный URI для тестирования
+	// uri := "mongodb://localhost:27017"
 
 	clientOptions := options.Client().ApplyURI(uri)
 
@@ -34,6 +36,7 @@ func ConnectDB() {
 	fmt.Println("✅ Successfully connected to MongoDB")
 }
 
+// GetCollection returns a MongoDB collection
 func GetCollection(collectionName string) *mongo.Collection {
 	if client == nil {
 		log.Fatal("❌ Database is not connected")

@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const username = localStorage.getItem('username');
     const authMessage = document.getElementById('auth-message');
     const accountInfo = document.getElementById('account-info');

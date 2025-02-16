@@ -9,6 +9,9 @@ import (
 func SetupRoutes(r *gin.Engine) {
 	r.POST("/api/auth/register", controllers.Register)
 	r.POST("/api/auth/login", controllers.Login)
+	r.GET("/api/games/getall", controllers.GetAllGames)
+	r.GET("/api/games/search", controllers.SearchGames)
+	r.GET("/api/games/:game_id", controllers.GetGameByID)
 
 	protected := r.Group("/api")
 	protected.Use(middleware.AuthMiddleware())
@@ -22,7 +25,8 @@ func SetupRoutes(r *gin.Engine) {
 
 		// Cart routes
 		protected.POST("/cart", controllers.AddToCart)
-		protected.DELETE("/cart", controllers.RemoveFromCart)
+		protected.DELETE("/cart/:game_id", controllers.RemoveFromCart)
+		protected.GET("/cart", controllers.GetCart)
 
 		// Order routes
 		protected.POST("/orders", controllers.PlaceOrder)

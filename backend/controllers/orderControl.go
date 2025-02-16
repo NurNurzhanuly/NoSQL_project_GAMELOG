@@ -34,16 +34,13 @@ func PlaceOrder(c *gin.Context) {
 
 	// Calculate total
 	var total float64
-	for _, item := range cart.Items {
-		total += float64(item.Quantity) * 59.99 // Assume each game costs $59.99
-	}
+	// тотал калкулатить ететин функция керек
 
 	// Convert cart items to order items
 	var orderItems []model.OrderItem
 	for _, cartItem := range cart.Items {
 		orderItems = append(orderItems, model.OrderItem{
-			GameID:   cartItem.GameID,
-			Quantity: cartItem.Quantity,
+			GameID: cartItem.GameID,
 		})
 	}
 

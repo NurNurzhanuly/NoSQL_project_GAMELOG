@@ -3,16 +3,17 @@ package services
 import (
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v4"
 )
 
 var jwtSecret = []byte("your-secret-key")
 
-// GenerateToken генерирует JWT токен с username
-func GenerateToken(username string) (string, error) {
+// GenerateToken generates a JWT token for the given username and userID
+func GenerateToken(userID string, username string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"username": username, // Изменено с "email" на "username"
-		"exp":      time.Now().Add(24 * time.Hour).Unix(),
+		"user_id":  userID, // Добавляем user_id
+		"username": username,
+		"exp":      time.Now().Add(24 * time.Hour).Unix(), // Token expiration
 	})
 
 	return token.SignedString(jwtSecret)
