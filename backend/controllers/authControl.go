@@ -32,6 +32,7 @@ func Register(c *gin.Context) {
 	// Check if user already exists
 	collection := database.GetCollection("users")
 	var existingUser model.User
+
 	// Check if the user already exists by email or username
 	err := collection.FindOne(context.TODO(), bson.M{"$or": []bson.M{
 		{"email": input.Email},
@@ -52,10 +53,11 @@ func Register(c *gin.Context) {
 
 	// Create a new user
 	newUser := model.User{
+		ID:         primitive.NewObjectID(),
 		Username:   input.Username,
 		Email:      input.Email,
 		Password:   string(hashedPassword),
-		OwnedGames: []primitive.ObjectID{},
+		OwnedGames: []model.OwnedGame{}, // 🔥 Исправлено! Теперь это массив объектов
 		CreatedAt:  time.Now(),
 	}
 
@@ -84,16 +86,19 @@ func Login(c *gin.Context) {
 	// search for the user in the database
 	collection := database.GetCollection("users")
 	var user model.User
+
+	log.Println("Searching for user:", input.Username)
+
 	err := collection.FindOne(context.TODO(), bson.M{"username": input.Username}).Decode(&user)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Неверное имя пользователя или пароль"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Неверное имя пользователя"})
 		return
 	}
 
 	// password check
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password))
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Неверное имя пользователя или пароль"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Неверный пароль"})
 		return
 	}
 
@@ -163,4 +168,83 @@ func UpdateUser(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "User updated successfully"})
+}
+
+func GetUserLibrary(c *gin.Context) {
+	// Получаем userID из контекста
+	userID := c.GetString("userID")
+	log.Println("Extracted userID from middleware:", userID)
+
+	if userID == "" {
+		log.Println("Unauthorized access: userID is empty")
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
+		return
+	}
+
+	var user model.User
+	userCollection := database.GetCollection("users")
+
+	// Преобразуем userID в ObjectID
+	userObjectID, err := primitive.ObjectIDFromHex(userID)
+	if err != nil {
+		log.Println("Invalid user ID format:", userID, "Error:", err)
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Invalid user ID"})
+		return
+	}
+
+	log.Println("Extracted userObjectID:", userObjectID.Hex())
+
+	// Поиск пользователя в базе
+	err = userCollection.FindOne(c, bson.M{"_id": userObjectID}).Decode(&user)
+	if err != nil {
+		log.Println("User not found with ID:", userObjectID.Hex(), "Error:", err)
+		c.JSON(http.StatusNotFound, gin.H{"message": "User not found"})
+		return
+	}
+
+	log.Println("User found:", user.Username, "OwnedGames count:", len(user.OwnedGames))
+
+	// Проверяем, есть ли вообще игры
+	if len(user.OwnedGames) == 0 {
+		log.Println("User has no owned games:", userObjectID.Hex())
+		c.JSON(http.StatusOK, gin.H{"message": "No games in library", "games": []model.Game{}})
+		return
+	}
+
+	// 🔥 Исправление: Теперь owned_games - массив объектов, достаем GameID
+	var gameIDs []primitive.ObjectID
+	for _, item := range user.OwnedGames {
+		gameIDs = append(gameIDs, item.GameID)
+	}
+
+	log.Println("Converted gameIDs:", gameIDs)
+
+	// Получаем список игр
+	gameCollection := database.GetCollection("games")
+	var games []model.Game
+
+	filter := bson.M{"_id": bson.M{"$in": gameIDs}}
+	cursor, err := gameCollection.Find(c, filter)
+	if err != nil {
+		log.Println("Error retrieving games for user:", userObjectID.Hex(), "Filter:", filter, "Error:", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Error retrieving games"})
+		return
+	}
+	defer cursor.Close(c)
+
+	// Декодируем игры
+	if err = cursor.All(c, &games); err != nil {
+		log.Println("Error decoding games for user:", userObjectID.Hex(), "Error:", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Error decoding games"})
+		return
+	}
+
+	if len(games) == 0 {
+		log.Println("No games found in database for user:", userObjectID.Hex())
+		c.JSON(http.StatusOK, gin.H{"message": "No games found", "games": []model.Game{}})
+		return
+	}
+
+	log.Println("Library retrieved successfully for user:", userObjectID.Hex(), "Total games:", len(games))
+	c.JSON(http.StatusOK, games)
 }
