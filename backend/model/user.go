@@ -15,6 +15,6 @@ type User struct {
 	Username   string             `bson:"username"`
 	Email      string             `bson:"email"`
 	Password   string             `bson:"password"`
-	OwnedGames []OwnedGame        `bson:"owned_games"` // Теперь массив объектов
+	OwnedGames []OwnedGame        `bson:"owned_games"`
 	CreatedAt  time.Time          `bson:"created_at"`
 }

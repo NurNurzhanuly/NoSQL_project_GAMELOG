@@ -45,7 +45,7 @@
     </div>
     <script>
         document.getElementById('registerForm').addEventListener('submit', async function (event) {
-            event.preventDefault(); // Отключаем стандартное поведение формы
+            event.preventDefault();
 
             const username = document.getElementById('username').value;
             const email = document.getElementById('email').value;
@@ -53,7 +53,6 @@
             const confirmPassword = document.getElementById('confirmPassword').value;
             const registrationMessage = document.getElementById('registrationMessage');
 
-            // Проверка совпадения паролей
             if (password !== confirmPassword) {
                 registrationMessage.textContent = 'Passwords do not match!';
                 registrationMessage.style.color = 'red';
@@ -74,8 +73,8 @@
                     registrationMessage.style.color = 'green';
                     document.getElementById('registerForm').reset();
                     setTimeout(() => {
-                        window.location.href = 'login.html'; // Перенаправление на страницу логина
-                    }, 2000); // Задержка 2 секунды для отображения сообщения пользователю
+                        window.location.href = 'login.html'; 
+                    }, 2000);
                 } else {
                     const data = await response.json();
                     registrationMessage.textContent = data.message || 'Registration failed!';

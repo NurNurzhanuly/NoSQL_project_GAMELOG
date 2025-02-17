@@ -22,7 +22,7 @@ func SetupRoutes(r *gin.Engine) {
 
 		// User routes
 		protected.POST("/user/update", controllers.UpdateUser)
-		protected.GET("/user/library", controllers.GetUserLibrary) // Добавленный маршрут для библиотеки
+		protected.GET("/user/library", controllers.GetUserLibrary)
 
 		// Cart routes
 		protected.POST("/cart", controllers.AddToCart)

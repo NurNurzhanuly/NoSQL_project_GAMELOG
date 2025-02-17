@@ -57,7 +57,7 @@ func Register(c *gin.Context) {
 		Username:   input.Username,
 		Email:      input.Email,
 		Password:   string(hashedPassword),
-		OwnedGames: []model.OwnedGame{}, // 🔥 Исправлено! Теперь это массив объектов
+		OwnedGames: []model.OwnedGame{},
 		CreatedAt:  time.Now(),
 	}
 
@@ -143,7 +143,6 @@ func UpdateUser(c *gin.Context) {
 		return
 	}
 
-	// Проверяем, не занят ли email другим пользователем
 	collection := database.GetCollection("users")
 	var existingUser model.User
 	err = collection.FindOne(context.TODO(), bson.M{"email": input.Email, "_id": bson.M{"$ne": userObjectID}}).Decode(&existingUser)
@@ -152,7 +151,6 @@ func UpdateUser(c *gin.Context) {
 		return
 	}
 
-	// Обновляем пользователя в MongoDB
 	update := bson.M{"$set": bson.M{"username": input.Username, "email": input.Email}}
 	result, err := collection.UpdateOne(context.TODO(), bson.M{"_id": userObjectID}, update)
 	if err != nil {
@@ -171,7 +169,6 @@ func UpdateUser(c *gin.Context) {
 }
 
 func GetUserLibrary(c *gin.Context) {
-	// Получаем userID из контекста
 	userID := c.GetString("userID")
 	log.Println("Extracted userID from middleware:", userID)
 
@@ -184,7 +181,6 @@ func GetUserLibrary(c *gin.Context) {
 	var user model.User
 	userCollection := database.GetCollection("users")
 
-	// Преобразуем userID в ObjectID
 	userObjectID, err := primitive.ObjectIDFromHex(userID)
 	if err != nil {
 		log.Println("Invalid user ID format:", userID, "Error:", err)
@@ -194,7 +190,6 @@ func GetUserLibrary(c *gin.Context) {
 
 	log.Println("Extracted userObjectID:", userObjectID.Hex())
 
-	// Поиск пользователя в базе
 	err = userCollection.FindOne(c, bson.M{"_id": userObjectID}).Decode(&user)
 	if err != nil {
 		log.Println("User not found with ID:", userObjectID.Hex(), "Error:", err)
@@ -204,14 +199,12 @@ func GetUserLibrary(c *gin.Context) {
 
 	log.Println("User found:", user.Username, "OwnedGames count:", len(user.OwnedGames))
 
-	// Проверяем, есть ли вообще игры
 	if len(user.OwnedGames) == 0 {
 		log.Println("User has no owned games:", userObjectID.Hex())
 		c.JSON(http.StatusOK, gin.H{"message": "No games in library", "games": []model.Game{}})
 		return
 	}
 
-	// 🔥 Исправление: Теперь owned_games - массив объектов, достаем GameID
 	var gameIDs []primitive.ObjectID
 	for _, item := range user.OwnedGames {
 		gameIDs = append(gameIDs, item.GameID)
@@ -219,7 +212,6 @@ func GetUserLibrary(c *gin.Context) {
 
 	log.Println("Converted gameIDs:", gameIDs)
 
-	// Получаем список игр
 	gameCollection := database.GetCollection("games")
 	var games []model.Game
 
@@ -232,7 +224,6 @@ func GetUserLibrary(c *gin.Context) {
 	}
 	defer cursor.Close(c)
 
-	// Декодируем игры
 	if err = cursor.All(c, &games); err != nil {
 		log.Println("Error decoding games for user:", userObjectID.Hex(), "Error:", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Error decoding games"})

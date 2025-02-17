@@ -196,7 +196,6 @@ func PurchaseAllGames(c *gin.Context) {
 		return
 	}
 
-	// Обновляем поле owned_games для пользователя
 	update := bson.M{"$addToSet": bson.M{"owned_games": bson.M{"$each": cart.Items}}}
 	_, err = userCollection.UpdateOne(context.TODO(), bson.M{"_id": userIDObj}, update)
 	if err != nil {
@@ -204,7 +203,6 @@ func PurchaseAllGames(c *gin.Context) {
 		return
 	}
 
-	// Очищаем корзину пользователя
 	_, err = cartCollection.DeleteOne(context.TODO(), bson.M{"user_id": userIDObj})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error clearing cart"})

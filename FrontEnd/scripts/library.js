@@ -5,13 +5,11 @@ document.addEventListener('DOMContentLoaded', async function () {
     const libraryHeader = document.getElementById('library-header');
     const libraryList = document.getElementById('library-list');
 
-    // Проверка, если пользователь залогинен
     if (username) {
         accountInfo.style.display = 'block';
         libraryHeader.style.display = 'block';
         libraryList.style.display = 'grid';
 
-        // Запрашиваем список игр
         try {
             const response = await fetch('/api/user/library', {
                 method: 'GET',
@@ -36,7 +34,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 function displayGames(games) {
     const libraryList = document.getElementById('library-list');
-    libraryList.innerHTML = ''; // Очистить список перед отображением
+    libraryList.innerHTML = '';
 
     games.forEach(game => {
         const gameCard = document.createElement('div');
